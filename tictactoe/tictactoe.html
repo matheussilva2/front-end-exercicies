@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TICTACTOE</title>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" type="text/css" href="_lib/_css/bootstrap.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+	<style type="text/css">
+		.pointer{
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body class="bg-light">
+	<div class="container-fluid" style="margin-top: 10%;">
+		<div class="row justify-content-center">
+			<div class="col-3 bg-white text-dark text-sm-center"><h1 class="display-4">TICTACTOE</h1></div>
+		</div>
+		<div class="row justify-content-center">
+			<div onclick="onClickCell(0);" id='cell-0' class="pointer text-light col-sm-1 text-center display-4 font-weight-bold bg-dark">&nbsp;</div>
+
+			<div onclick="onClickCell(1);" id='cell-1' class="pointer text-light col-sm-1 bg-secondary text-center display-4 font-weight-bold">&nbsp;</div>
+
+			<div onclick="onClickCell(2);" id='cell-2' class="pointer text-light col-sm-1 text-center display-4 font-weight-bold bg-dark">&nbsp;</div>
+		</div>
+		<div class="row justify-content-center">
+			<div onclick="onClickCell(3);" id='cell-3' class="pointer text-light col-sm-1 bg-secondary text-center display-4 font-weight-bold">&nbsp;</div>
+			<div onclick="onClickCell(4);" id='cell-4' class="pointer text-light col-sm-1 text-center display-4 font-weight-bold bg-dark">&nbsp;</div>
+			<div onclick="onClickCell(5);" id='cell-5' class="pointer text-light col-sm-1 bg-secondary text-center display-4 font-weight-bold">&nbsp;</div>
+		</div>
+		<div class="row justify-content-center">
+			<div onclick="onClickCell(6);" id='cell-6' class="pointer text-light col-sm-1 text-center display-4 font-weight-bold bg-dark">&nbsp;</div>
+			<div onclick="onClickCell(7);" id='cell-7' class="pointer text-light col-sm-1  text-center display-4 font-weight-bold bg-secondary">&nbsp;</div>
+			<div onclick="onClickCell(8);" id='cell-8' class="pointer text-light col-sm-1 text-center display-4 font-weight-bold bg-dark">&nbsp;</div>
+		</div>
+			<p id="winMsg" class="display-4 text-success text-center"></p>
+			<p id="drawMsg" class="display-4 text-warning text-center"></p>
+			<p id="notification" class="display-3 text-info text-center"></p>
+			<div class="col text-center">
+				<input onclick="btnStartClick();" id="btn-start" type="button" class="btn btn-primary" value="Start Match">
+			</div>
+	</div>
+	<script type="text/javascript" src="_lib/_js/bootstrap.js"></script>
+	<script type="text/javascript" src="_js/tictactoe.js"></script>
+	<script type="text/javascript" src="_js/matchmanager.js"></script>
+	<script type="text/javascript">
+		resetBoard();
+		changeElementText('notification','Match not started!')
+		function btnStartClick(){
+			changeElementText('winMsg','');
+			changeElementText('notification','');
+			document.getElementById("btn-start").disabled = true;
+			resetBoard();
+			renderBoard();
+			startMatch();
+			changeElementText('notification',"It's "+getCurrentTurn()+" turn!");
+		}
+		function renderBoard () {
+			for(var i = 0;i<=8;i++){
+			document.getElementById('cell-'+i).innerHTML =  getPositionValue(i)!='0'?getPositionValue(i):'&nbsp;';
+			}
+		}
+
+		function changeElementText(element,text){
+			document.getElementById(element).innerHTML=text;
+		}
+		function onClickCell(id){
+			if(isMatchStarted()){
+				if(markBoardPosition(id,getCurrentTurn())){
+					renderBoard();
+					nextTurn();
+					changeElementText('notification',"It's "+getCurrentTurn()+" turn!");
+					if(hasAWinner() != false){
+						changeElementText('winMsg',"The player <span class='font-weight-bold'>"+hasAWinner()+"</span> won!");
+						document.getElementById('btn-start').disabled = false;
+						finishMatch();
+						changeElementText('notification',"Match Finished!")
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
